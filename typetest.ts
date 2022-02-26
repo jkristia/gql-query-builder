@@ -1,27 +1,25 @@
 
 
-type Character = {
+type TCharacter = {
     id: string;
     name: string;
 }
 
-type Person = Character & {
+type TPerson = TCharacter & {
     age: number;
     height: number;
-    pets?: Dog[];
+    pets?: TDog[];
 }
 
-type Dog = Character & {
+type TDog = TCharacter & {
     breed: string;
-    owner?: Person;
+    owner?: TPerson;
 }
-
 //************************************************************ */
 interface ICharacter {
     id: string;
     name: string;
 }
-
 interface IPerson extends ICharacter {
     age: string;
     height: string;
@@ -31,13 +29,11 @@ interface IDog extends ICharacter {
     breed: string;
     owner: string;
 }
-
-class _character implements ICharacter{
+//************************************************************ */
+class _character implements ICharacter {
     id = 'id';
     name = 'name';
 }
-
-//************************************************************ */
 class _person extends _character implements IPerson {
     age = 'age' as any;
     height = 'height' as any;
@@ -47,38 +43,37 @@ class _dog extends _character implements IDog {
     breed = 'breed' as any;
     owner = 'owner' as any;
 }
-
 //************************************************************ */
 
-type fnCallback<T> = (obj: T) => string;
+type fnFieldName<T> = (obj: T) => string;
 type fnQueryCallback<T> = (obj: T) => { name: string, q: query<any> };
+type fnNewSub = () => query<any>;
 
 class query<T> {
     public fields: string[] = []
     constructor(public obj: T) {
     }
-    addField(cb: fnCallback<T>): query<T> {
-        this.fields.push(cb(this.obj))
+    field(fnField: fnFieldName<T>): query<T> {
+        this.fields.push(fnField(this.obj))
         return this;
     }
-    addQuery(cb: fnQueryCallback<T>) {
+    sub(fnField: fnFieldName<T>, newSub: fnNewSub): query<T> {
+        return this;
     }
 }
 
 const q1 = new query<IPerson>(new _person())
-    .addField(d => d.id)
-    .addField(d => d.name)
-    .addQuery(d => {
-        return {
-            name: d.pets,
-            q: new query<IDog>(new _dog())
-            .addField(d => d.owner)
-            .addField(d => d.breed)
-        }
-    })
+    .field(d => d.id)
+    .field(d => d.name)
+    .sub(
+        d => d.pets,
+        () => new query<IDog>(new _dog())
+            .field(d => d.owner)
+            .field(d => d.breed)
+    )
 
-const q2 = new query<Dog>(new _dog())
-    .addField(d => d.id)
-    .addField(d => d.breed)
+const q2 = new query<IDog>(new _dog())
+    .field(d => d.id)
+    .field(d => d.breed)
 
 
