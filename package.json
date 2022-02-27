@@ -1,0 +1,35 @@
+{
+	"name": "nodejs_basictemplate",
+	"version": "1.0.0",
+	"description": "nodejs / typescript + Jest",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest",
+		"start": "ts-node-dev --respawn -- src/main.ts"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@graphql-tools/graphql-file-loader": "^7.3.4",
+		"@graphql-tools/load": "^7.5.2",
+		"cors": "^2.8.5",
+		"express": "^4.17.2",
+		"graphql": "^16.3.0",
+		"socket.io": "^4.4.1",
+		"ssh2": "^1.6.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.17.2",
+		"@babel/plugin-proposal-export-namespace-from": "^7.16.7",
+		"@babel/plugin-transform-typescript": "^7.16.8",
+		"@babel/preset-env": "^7.16.11",
+		"@types/express": "^4.17.13",
+		"@types/jest": "^27.4.0",
+		"@types/node": "^17.0.17",
+		"@types/ssh2": "^0.5.51",
+		"babel-jest": "^27.5.1",
+		"jest": "^27.5.1",
+		"ts-node": "^10.5.0",
+		"ts-node-dev": "^1.1.8"
+	}
+}

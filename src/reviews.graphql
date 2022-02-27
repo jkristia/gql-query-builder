@@ -1,0 +1,4 @@
+type Review {
+  name: String!
+  message: String!
+}
