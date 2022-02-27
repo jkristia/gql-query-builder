@@ -10,6 +10,7 @@ type FieldItem = {
 
 export class QbBase<T> {
 	private _fields: FieldItem[] = [];
+	protected __typename = '';
 	field(fnField: (obj: T) => string): T {
 		const name = fnField(this as any);
 		this._fields.push({
@@ -20,6 +21,14 @@ export class QbBase<T> {
 	}
 	sub(fnField: (obj: T) => string, sub: QbBase<any>): T {
 		const name = fnField(this as any);
+		this._fields.push({
+			name,
+			value: sub
+		})
+		return this as any as T;
+	}
+	fragment(sub: QbBase<any>): T {
+		const name = `... on ${sub.__typename} `;
 		this._fields.push({
 			name,
 			value: sub

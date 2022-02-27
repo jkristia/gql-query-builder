@@ -21,44 +21,27 @@ import { loadSchemas } from '../shared/load-schema';
 // 	},
 // }
 
-interface Adult {
-	id: string;
-	name: string;
-	work: string;
-}
-interface Child {
-	id: string;
-	name: string;
-	school: string;
-}
-const adults: Adult[] = [
-	{ id: '1', name: 'adult1', work: 'a-work' },
-	{ id: '2', name: 'adult2', work: 'a-work' },
-]
-const child: Child[] = [
-	{ id: '3', name: 'child1', school: 'shool1' },
-	{ id: '4', name: 'child2', school: 'shool2' },
-]
-
 interface Item {
 	id: string;
 	name: string;
 }
-interface Item1 extends Item {
-	items?: Item2[]
+interface ItemA extends Item {
+	items?: ItemB[]
+	onlyOnA: string;
 }
-interface Item2 extends Item {
-	items?: Item2[]
+interface ItemB extends Item {
+	items?: ItemA[]
+	onlyOnB: string;
 }
 
-const items1: Item1[] = [
-	{ id: 'item1.1', name: 'abc' },
-	{ id: 'item1.2', name: 'abc2' },
-	{ id: 'item1.3', name: 'abc3' },
+const itemsA: ItemA[] = [
+	{ id: 'item1.1', name: 'abc', onlyOnA: 'a' },
+	{ id: 'item1.2', name: 'abc2', onlyOnA: 'a' },
+	{ id: 'item1.3', name: 'abc3', onlyOnA: 'a' },
 ]
 
-const items2: Item1[] = [
-	{ id: 'item2.1', name: 'def' }
+const itemsB: ItemB[] = [
+	{ id: 'item2.1', name: 'def', onlyOnB: 'b' }
 ]
 
 	// https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/
@@ -74,24 +57,53 @@ const resolverMap = {
 			// console.log('#2 :', obj, context, info);
 			// does this only matter when __typename is being queried ?
 			if (obj.id.startsWith('item1')) {
-				return 'Item1';
+				return 'ItemA';
 			}
-			return 'Item2';
+			return 'ItemB';
 		}
 	},
-
-
+	UnionItem: {
+		__resolveType: (obj: Item, context: any, info: any) => {
+			console.log('#2 :', obj, context, info);
+			// does this only matter when __typename is being queried ?
+			if (obj.id.startsWith('item1')) {
+				return 'ItemA';
+			}
+			return 'ItemB';
+		}
+	},
 
 	Query: {
 		greeting() {
 			return { hello: 'world' }
 		},
+		itemsAsUnion(parent: any, args: any, context: any, info: any) {
+			// console.log('#1 :', parent, args, context, info)
+			return [...itemsA, ...itemsB]
+		},
 		itemsAsInterface(parent: any, args: any, context: any, info: any) {
 			// console.log('#1 :', parent, args, context, info)
-			return [...items1, ...items2]
+			return [...itemsA, ...itemsB]
 		}
 	}
 }
+
+/*
+	adding resolve type for fragment support query
+
+	query{
+		itemsAsInterface {
+			id
+			name
+			... on ItemA {
+			onlyOnA
+			}
+			... on ItemB {
+			onlyOnB
+			}
+		}
+	}
+*/
 
 
 const PORT = 3000;

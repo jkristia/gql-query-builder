@@ -4,67 +4,29 @@ interface ItemInterface {
 	id: ID!
 	name: String!
 }
-union UnionItem = Item1 | Item2
+union UnionItem = ItemA | ItemB
 
-type Item1 implements ItemInterface {
+type ItemA implements ItemInterface {
 	id: ID!
 	name: String!
-	items: [Item2!]
+	items: [ItemB!]
+	onlyOnA: String
 }
 
-type Item2 implements ItemInterface {
+type ItemB implements ItemInterface {
 	id: ID!
 	name: String!
-	items: [Item1!]
+	items: [ItemA!]
+	onlyOnB: String
 }
-
-type Query {
-	# humans: [Human!]
-	# persons: [Person!]
-	greeting: Hello!
-	# hello: String
-	itemsAsUnion: [UnionItem!]
-	itemsAsInterface: [ItemInterface!]
-}
-
-
 
 type Hello {
 	hello: String
 }
 
-# union Person = Adult | Child
-
-# interface IdAndName {
-# 	id: ID!
-# 	name: String!
-# }
-
-# type Adult implements IdAndName {
-# 	id: ID!
-# 	name: String!
-# 	work: String!
-# }
-
-# type Child implements IdAndName {
-# 	id: ID!
-# 	name: String!
-# 	school: String!
-# }
-
-
-
-# type Dog {
-# 	id: ID
-# 	breed: String
-# 	owner: Human
-# }
-
-# type Human {
-# 	id: ID!
-# 	name: String
-# 	age: Int
-# 	height: Int
-# 	pets: [Dog!]
-# }
+type Query {
+	greeting: Hello!
+	itemsAsUnion: [UnionItem!]
+	itemsAsInterface: [ItemInterface!]
+}
 

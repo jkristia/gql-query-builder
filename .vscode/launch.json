@@ -1,6 +1,22 @@
 {
     "configurations": [
-        
-    
+        {
+            "name": "Generate",
+            "program": "${workspaceFolder}/dist/src/main.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Server",
+            "program": "${workspaceFolder}/dist/src/server/server.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        }
     ]
 }
