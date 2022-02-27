@@ -2,36 +2,16 @@
 import { QbBase } from '../qbbase'
 
 export class QbQuery extends QbBase<QbQuery> {
-	product(product: QbProduct): QbQuery {
-		this.sub(() => 'product', product)
+	humans(humans: QbHuman): QbQuery {
+		this.sub(() => 'humans', humans)
 		return this;
 	}
-	products(products: QbProduct): QbQuery {
-		this.sub(() => 'products', products)
+	readonly persons = 'persons';
+	greeting(greeting: QbHello): QbQuery {
+		this.sub(() => 'greeting', greeting)
 		return this;
 	}
-}
-export class QbProduct extends QbBase<QbProduct> {
-	readonly id = 'id';
-	readonly name = 'name';
-	readonly description = 'description';
-	readonly price = 'price';
-	reviews(reviews: QbReview): QbProduct {
-		this.sub(() => 'reviews', reviews)
-		return this;
-	}
-}
-export class QbReview extends QbBase<QbReview> {
-	readonly name = 'name';
-	readonly message = 'message';
-}
-export class QbDog extends QbBase<QbDog> {
-	readonly id = 'id';
-	readonly breed = 'breed';
-	owner(owner: QbHuman): QbDog {
-		this.sub(() => 'owner', owner)
-		return this;
-	}
+	readonly hello = 'hello';
 }
 export class QbHuman extends QbBase<QbHuman> {
 	readonly id = 'id';
@@ -40,6 +20,25 @@ export class QbHuman extends QbBase<QbHuman> {
 	readonly height = 'height';
 	pets(pets: QbDog): QbHuman {
 		this.sub(() => 'pets', pets)
+		return this;
+	}
+}
+export class QbHello extends QbBase<QbHello> {
+	readonly hello = 'hello';
+}
+export class QbAdult extends QbBase<QbAdult> {
+	readonly name = 'name';
+	readonly work = 'work';
+}
+export class QbChild extends QbBase<QbChild> {
+	readonly name = 'name';
+	readonly school = 'school';
+}
+export class QbDog extends QbBase<QbDog> {
+	readonly id = 'id';
+	readonly breed = 'breed';
+	owner(owner: QbHuman): QbDog {
+		this.sub(() => 'owner', owner)
 		return this;
 	}
 }

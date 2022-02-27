@@ -5,16 +5,20 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "jest",
-		"start": "ts-node-dev --respawn -- src/main.ts"
+		"start": "ts-node-dev --respawn -- src/main.ts",
+		"server": "ts-node-dev --respawn -- src/server/server.ts"
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"@graphql-tools/graphql-file-loader": "^7.3.4",
 		"@graphql-tools/load": "^7.5.2",
+		"apollo-server-core": "^3.6.3",
+		"apollo-server-express": "^3.6.3",
 		"cors": "^2.8.5",
-		"express": "^4.17.2",
+		"express": "^4.17.3",
 		"graphql": "^16.3.0",
+		"graphql-tools": "^8.2.0",
 		"socket.io": "^4.4.1",
 		"ssh2": "^1.6.0"
 	},

@@ -1,0 +1,40 @@
+# import Review from "reviews.graphql"
+
+type Query {
+	humans: [Human!]
+	persons: [Person!]
+	greeting: Hello!
+	hello: String
+}
+
+type Hello {
+	hello: String
+}
+
+type Adult {
+  name: String!
+  work: String!
+}
+
+type Child {
+  name: String!
+  school: String!
+}
+
+union Person = Adult | Child
+
+
+type Dog {
+	id: ID
+	breed: String
+	owner: Human
+}
+
+type Human {
+	id: ID!
+	name: String
+	age: Int
+	height: Int
+	pets: [Dog!]
+}
+
