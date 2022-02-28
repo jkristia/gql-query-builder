@@ -1,4 +1,6 @@
 // file is auto generated, do not modify
+// https://github.com/jkristia/gql-query-builder
+
 import { QbBase } from '../qbbase'
 
 export class QbItemInterface extends QbBase<QbItemInterface> {

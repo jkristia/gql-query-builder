@@ -92,3 +92,8 @@ Output of the query:
 
 ```
 [Auto generated file](src/autogen/qb/qbtypes.ts)
+
+// https://www.graphql-tools.com/docs/schema-loading
+// https://graphql.wtf/episodes/22-graphql-schema-file-loading-with-graphql-tools
+
+

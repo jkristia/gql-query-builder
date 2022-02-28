@@ -2,21 +2,30 @@
 // https://graphql.wtf/episodes/22-graphql-schema-file-loading-with-graphql-tools
 import path from 'path';
 import fs from 'fs';
-import { GraphQLField, GraphQLInterfaceType, GraphQLNamedType, GraphQLNonNull, GraphQLNullableType, GraphQLObjectType, GraphQLScalarType, GraphQLUnionType, printSchema } from 'graphql';
-import { loadSchemaSync } from '@graphql-tools/load';
-import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
+import {
+    GraphQLField, GraphQLInterfaceType, GraphQLNonNull, GraphQLObjectType, GraphQLScalarType, GraphQLSchema, GraphQLUnionType
+} from 'graphql';
 import { StringWriter } from './stringWriter';
+import { loadSchemas } from './shared/load-schema';
 
 export class QueryBuilderGeenrator {
 
-    public generateQbClasses(types: { [key: string]: GraphQLNamedType }) {
-        const outputpath = 'src/autogen/qb'
+    private _schema: GraphQLSchema;
+    constructor(private _inputFile: string) {
+        this._schema = loadSchemas(_inputFile);
+    }
+    public generateQbClasses(
+        outputpath: string
+    ) {
+        const types = this._schema.getTypeMap()
         const outputfilename = path.join(outputpath, 'qbtypes.ts');
         if (!fs.existsSync(outputpath)) {
             fs.mkdirSync(outputpath, { recursive: true });
         }
         const wr = new StringWriter();
         wr.writeLine('// file is auto generated, do not modify')
+        wr.writeLine('// https://github.com/jkristia/gql-query-builder')
+        wr.writeLine('');
         wr.writeLine(`import { QbBase } from '../qbbase'`)
         wr.writeLine('');
 

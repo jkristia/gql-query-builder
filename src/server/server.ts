@@ -114,7 +114,8 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 async function setupGraphQl() {
-	const loadedTypeDefs = loadSchemas();
+	const inputFile = 'src/schemas/schema.graphql'
+	const loadedTypeDefs = loadSchemas(inputFile);
 
 	// https://www.apollographql.com/docs/apollo-server/api/apollo-server/#schema
 	const server = new ApolloServer({
