@@ -35,7 +35,7 @@ function runDev() {
 function runMain() {
 	const program = new Command()
 	program
-		.name('graphql-guerybuilder-generator')
+		.name('gql-query-generator')
 		.description('Generates TypeScript query classes based on .graphql schema')
 	program
 		.option('-i, --input  [file]', '.graphql root file')

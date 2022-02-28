@@ -56,7 +56,7 @@ export class QueryBuilderGeenrator {
         const className = `Qb${obj.name}`;
         wr.writeLine(`export class ${className} extends QbBase<${className}> {`);
         wr.indent();
-        wr.writeLine(`readonly __typename = '${className}';`)
+        wr.writeLine(`readonly __typename = '${obj.name}';`)
         const fields = obj.getFields();
         for (const fieldName in fields) {
             const field = fields[fieldName];
