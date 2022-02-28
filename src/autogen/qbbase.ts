@@ -63,11 +63,32 @@ export class QbBase<T> {
 		wr.writeLine(`}`)
 		return wr;
 	}
+	protected _multipleRoots: QbBase<any>[] | null = null;
+	protected writeMultipleRoots(): StringWriter {
+		const wr = new StringWriter();
+		wr.writeLine(`{`)
+		wr.indent();
+		for (const root of this._multipleRoots!) {
+			root.write(root.__typename, wr);
+		}
+		wr.popIndent();
+		wr.writeLine(`}`)
+		return wr;
+	}
 	public toString(): string {
+		if (this._multipleRoots) {
+			return this.writeMultipleRoots().toString();
+		}
 		if (this._asRoot) {
 			return this.writeAsRoot().toString();
 		}
 		const wr = new StringWriter().indentCharacter('   ');
 		return this.write('', wr).toString();
+	}
+}
+export class QbMultiple extends QbBase<any> {
+	constructor(...qbs: QbBase<any>[]) {
+		super();
+		this._multipleRoots = qbs;
 	}
 }
