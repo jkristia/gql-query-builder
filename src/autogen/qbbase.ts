@@ -11,6 +11,7 @@ type FieldItem = {
 export class QbBase<T> {
 	private _fields: FieldItem[] = [];
 	protected __typename = '';
+	protected _asRoot = true;
 	field(fnField: (obj: T) => string): T {
 		const name = fnField(this as any);
 		this._fields.push({
@@ -21,6 +22,7 @@ export class QbBase<T> {
 	}
 	sub(fnField: (obj: T) => string, sub: QbBase<any>): T {
 		const name = fnField(this as any);
+		sub._asRoot = false;
 		this._fields.push({
 			name,
 			value: sub
@@ -29,6 +31,7 @@ export class QbBase<T> {
 	}
 	fragment(sub: QbBase<any>): T {
 		const name = `... on ${sub.__typename} `;
+		sub._asRoot = false;
 		this._fields.push({
 			name,
 			value: sub
@@ -50,9 +53,20 @@ export class QbBase<T> {
 		wr.popIndent();
 		wr.writeLine('}');
 		return wr;
-
+	}
+	protected writeAsRoot(): StringWriter {
+		const wr = new StringWriter();
+		wr.writeLine(`{`)
+		wr.indent();
+		this.write(this.__typename, wr);
+		wr.popIndent();
+		wr.writeLine(`}`)
+		return wr;
 	}
 	public toString(): string {
+		if (this._asRoot) {
+			return this.writeAsRoot().toString();
+		}
 		const wr = new StringWriter().indentCharacter('   ');
 		return this.write('', wr).toString();
 	}
