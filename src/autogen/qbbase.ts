@@ -7,11 +7,21 @@ type FieldItem = {
 	name: string;
 	value: string | QbBase<any>
 }
+type Argument = {
+	name: string;
+	value: string;
+}
 
 export class QbBase<T> {
 	private _fields: FieldItem[] = [];
 	protected __typename = '';
 	protected _asRoot = true;
+	protected _arguments: Argument[] = [];
+
+	argument( fnArg: (obj: T) => {name: string, value: string}): T {
+		this._arguments.push(fnArg(this as any));
+		return this as any as T
+	}
 	field(fnField: (obj: T) => string): T {
 		const name = fnField(this as any);
 		this._fields.push({
@@ -41,7 +51,12 @@ export class QbBase<T> {
 
 	protected write(fieldname: string = '', wr?: StringWriter): StringWriter {
 		wr = wr || new StringWriter();
-		wr.writeLine(`${fieldname}{`);
+		let args = '';
+		if (this._arguments.length > 0) {
+			const m = this._arguments.map(a => `${a.name}: "${a.value}"`);
+			args = `(${m.join(', ')})`
+		}
+		wr.writeLine(`${fieldname}${args}{`);
 		wr.indent();
 		for (const field of this._fields) {
 			if (field.value instanceof QbBase) {
