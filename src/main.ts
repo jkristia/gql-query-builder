@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { QbHello, QbItemA, QbItemInterface, QbQuery, QbUnionItem } from './autogen/qb/qbtypes';
 import { Command } from 'commander';
 import { exit } from 'process';
